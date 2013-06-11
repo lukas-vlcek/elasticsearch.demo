@@ -1,32 +1,54 @@
 package org.elasticsearch.demo;
 
+import org.apache.log4j.BasicConfigurator;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.Requests;
+import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.node.Node;
 import org.elasticsearch.node.NodeBuilder;
 import org.elasticsearch.search.SearchHit;
-import org.testng.annotations.Test;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
+import static org.elasticsearch.common.settings.ImmutableSettings.settingsBuilder;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
-public class BasicTest extends AbstractTest {
+public class BasicTest {
+
+    @Rule
+    public TemporaryFolder testFolder = new TemporaryFolder();
+    private Settings settings;
+
+    @Before
+    public void prepare() throws IOException {
+        BasicConfigurator.resetConfiguration();
+        BasicConfigurator.configure();
+        String tempFolderName = testFolder.newFolder(BasicTest.class.getName()).getCanonicalPath();
+        settings = settingsBuilder()
+                .put("index.store.type", "memory")
+                .put("gateway.type", "none")
+                .put("path.data", tempFolderName)
+                .build();
+    }
 
     private byte[] createSource(String room, String color) throws IOException {
         return XContentFactory.jsonBuilder()
-            .startObject()
-            .field("room", room)
-            .field("color", color)
-            .endObject()
-            .copiedBytes();
+                .startObject()
+                .field("room", room)
+                .field("color", color)
+                .endObject()
+                .copiedBytes();
     }
 
     @Test
@@ -41,11 +63,11 @@ public class BasicTest extends AbstractTest {
 
         Client client = node.client();
 
-        client.prepareIndex("house", "room", "1").setSource(createSource("livingroom","red")).execute().actionGet();
-        client.prepareIndex("house", "room", "2").setSource(createSource("familyroom","white")).execute().actionGet();
-        client.prepareIndex("house", "room", "3").setSource(createSource("kitchen","blue")).execute().actionGet();
-        client.prepareIndex("house", "room", "4").setSource(createSource("bathroom","white")).execute().actionGet();
-        client.prepareIndex("house", "room", "5").setSource(createSource("garage","blue")).execute().actionGet();
+        client.prepareIndex("house", "room", "1").setSource(createSource("livingroom", "red")).execute().actionGet();
+        client.prepareIndex("house", "room", "2").setSource(createSource("familyroom", "white")).execute().actionGet();
+        client.prepareIndex("house", "room", "3").setSource(createSource("kitchen", "blue")).execute().actionGet();
+        client.prepareIndex("house", "room", "4").setSource(createSource("bathroom", "white")).execute().actionGet();
+        client.prepareIndex("house", "room", "5").setSource(createSource("garage", "blue")).execute().actionGet();
 
         client.admin().indices().refresh(Requests.refreshRequest("_all")).actionGet();
 
