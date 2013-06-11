@@ -1,6 +1,5 @@
 package org.elasticsearch.demo;
 
-import org.apache.log4j.BasicConfigurator;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.Requests;
@@ -32,8 +31,6 @@ public class BasicTest {
 
     @Before
     public void prepare() throws IOException {
-        BasicConfigurator.resetConfiguration();
-        BasicConfigurator.configure();
         String tempFolderName = testFolder.newFolder(BasicTest.class.getName()).getCanonicalPath();
         settings = settingsBuilder()
                 .put("index.store.type", "memory")
