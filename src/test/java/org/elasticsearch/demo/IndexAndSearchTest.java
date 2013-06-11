@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Lukas Vlcek
+ * Copyright 2013 Lukas Vlcek and contributors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -99,9 +99,9 @@ public class IndexAndSearchTest {
         expected.add("2");
         expected.add("4");
 
-        assertEquals(expected.size(), resp.hits().getTotalHits());
+        assertEquals(expected.size(), resp.getHits().getTotalHits());
 
-        for (SearchHit hit : resp.hits().getHits()) {
+        for (SearchHit hit : resp.getHits().getHits()) {
             assertTrue(expected.contains(hit.id()));
         }
 
@@ -117,6 +117,6 @@ public class IndexAndSearchTest {
                 .field("room", room)
                 .field("color", color)
                 .endObject()
-                .copiedBytes();
+                .bytes().toBytes();
     }
 }
