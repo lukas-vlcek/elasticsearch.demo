@@ -10,7 +10,11 @@
 
     <properties>
         <compileSource>1.6</compileSource>
-        <org.elasticsearch.version>0.90.0</org.elasticsearch.version>
+        <!--
+            For some tests to work correctly we need elasticsearch version which includes fix for
+            https://github.com/elasticsearch/elasticsearch/issues/3166
+        -->
+        <org.elasticsearch.version>0.90.2</org.elasticsearch.version>
     </properties>
 
     <dependencies>

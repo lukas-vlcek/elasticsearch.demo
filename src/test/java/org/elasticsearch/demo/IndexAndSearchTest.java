@@ -20,7 +20,6 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.Requests;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.node.Node;
@@ -39,7 +38,7 @@ import static org.elasticsearch.common.settings.ImmutableSettings.settingsBuilde
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class IndexAndSearchTest {
+public class IndexAndSearchTest extends BaseTestSupport {
 
     @Rule
     public TemporaryFolder testFolder = new TemporaryFolder();
@@ -109,14 +108,6 @@ public class IndexAndSearchTest {
         client.close();
         node.close();
 
-    }
-
-    private byte[] createSource(String room, String color) throws IOException {
-        return XContentFactory.jsonBuilder()
-                .startObject()
-                .field("room", room)
-                .field("color", color)
-                .endObject()
-                .bytes().toBytes();
+        assertTrue(node.isClosed());
     }
 }
