@@ -14,7 +14,7 @@
             For some tests to work correctly we need elasticsearch version which includes fix for
             https://github.com/elasticsearch/elasticsearch/issues/3166
         -->
-        <org.elasticsearch.version>0.90.2</org.elasticsearch.version>
+        <org.elasticsearch.version>6.8.17</org.elasticsearch.version>
     </properties>
 
     <dependencies>
